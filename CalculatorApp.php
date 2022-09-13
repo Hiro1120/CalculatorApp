@@ -28,6 +28,7 @@ if(isNumBtn($button)||empty($button)){
             if(($displayNum == '0') && ($button == '0')){
                 $displayNum = '';
             }
+
             $displayNum = $displayNum.$button;
     }
 
@@ -36,18 +37,36 @@ if(isNumBtn($button)||empty($button)){
 
 //＜＜＜＜＜＜＜＜＜＜＜＜記号ボタンが押された場合＞＞＞＞＞＞＞＞＞＞＞＞＞＞
     switch($button){
-        case 'C': //クリアを押した場合
+        case 'AC': //オールクリア
             $displayNum = '';
             $pre_num = '';
             $input_num = '';
             break;
 
-        case 'AC':
-            $displayNum = '';
-            $pre_num = '';
-            $input_num = '';
+        case '+/-': //符号反転
+            $displayNum = -$displayNum;
             break;
-            default: //クリアを押さなかったら次の処理へ
+
+        case '%': //百分率
+            $displayNum = $displayNum / 100;
+            break;
+
+        case 'x^2': //二乗
+            $displayNum *= $displayNum;
+            break;
+
+        case 'e': //ネイピア数
+            $displayNum = $displayNum * 2.718281828459045;
+            break;    
+
+        case 'e^x': //ネイピア数の累乗
+            $displayNum = 2.718281828459045 ** $displayNum;
+            break;
+
+        case '10^x': //10の累乗
+            $displayNum = 10 ** $displayNum;
+            break;
+            default: //次の処理へ
 
             //すでに数字ボタンが押されており、次に押すボタンが記号ボタンまたは「=」の場合
         if(!empty($pre_num)&&(preg_match('/=/', $button)||(isNumBtn($pre_button)&&isSymBtn($button)))){
@@ -64,11 +83,20 @@ if(isNumBtn($button)||empty($button)){
                 case '÷':
                     $displayNum = $pre_num / $displayNum;
                     break;
-                case '%':
-                    $displayNum = $pre_num / 100;
-                    break;                    
+
+                case 'x^y':
+                    $displayNum = $pre_num ** $displayNum;
+                    break;
                     default:
                     break;
+            }
+
+            //現在入力中の値をクリア
+            if($button == "C"){
+                $displayNum = $pre_num;
+                $ope = '';
+                $pre_button = $pre_num;
+                break;
             }
         }
         //「=」を押さない場合
@@ -86,7 +114,7 @@ $pre_button = $button;
 
 //記号ボタンの判別に関する関数
 function isSymBtn($btn){
-    if($btn=='+'||$btn=='-'||$btn=='×'||$btn=='÷'||$btn=='AC'||$btn=='C'||$btn=='.'||$btn==' '||$btn=='%'){
+    if($btn=='+'||$btn=='-'||$btn=='×'||$btn=='÷'||$btn=='AC'||$btn=='C'||$btn=='x^2'||$btn=='%'||$btn=='+/-'||$btn=='e'||$btn=='e^x'||$btn=='x^y'||$btn=='10^x'){
         return true;
     }else{
         return false;
