@@ -24,10 +24,6 @@ if(isNumBtn($button)||empty($button)){
             if(($displayNum == '0') && (isNumBtn($button) != '0')){ 
                 $displayNum = '';
             }
-            //00と表示されないようにする
-            if(($displayNum == '0') && ($button == '0')){
-                $displayNum = '';
-            }
 
             $displayNum = $displayNum.$button;
     }
@@ -68,7 +64,7 @@ if(isNumBtn($button)||empty($button)){
             break;
             default: //次の処理へ
 
-            //すでに数字ボタンが押されており、次に押すボタンが記号ボタンまたは「=」の場合
+        //すでに数字ボタンが押されており、次に押すボタンが記号ボタンまたは「=」の場合
         if(!empty($pre_num)&&(preg_match('/=/', $button)||(isNumBtn($pre_button)&&isSymBtn($button)))){
             switch($ope){
                 case '+':
@@ -123,7 +119,7 @@ function isSymBtn($btn){
 
 //数字ボタンの判別に関する関数
 function isNumBtn($btn){
-    if($btn=='1'||$btn=='2'||$btn=='3'||$btn=='4'||$btn=='5'||$btn=='6'||$btn=='7'||$btn=='8'||$btn=='9'){
+    if($btn=='0'||$btn=='1'||$btn=='2'||$btn=='3'||$btn=='4'||$btn=='5'||$btn=='6'||$btn=='7'||$btn=='8'||$btn=='9'){
         return true;
     }else{
         return false;
